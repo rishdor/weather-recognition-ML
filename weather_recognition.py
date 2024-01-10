@@ -41,7 +41,7 @@ val_ds = tf.keras.utils.image_dataset_from_directory(
 class_names = train_ds.class_names
 print(f'class names: {class_names}')
 
-train_ds = train_ds.cache().shuffle(4500).prefetch(buffer_size=tf.data.AUTOTUNE)
+train_ds = train_ds.cache().shuffle(3500).prefetch(buffer_size=tf.data.AUTOTUNE)
 val_ds = val_ds.cache().prefetch(buffer_size=tf.data.AUTOTUNE)
 
 model = Sequential([
@@ -65,7 +65,7 @@ model.compile(optimizer='adam',
                 metrics=['accuracy'])
 model.summary()
 
-epochs=30
+epochs=20
 history = model.fit(
     train_ds,
     validation_data=val_ds,
@@ -92,7 +92,8 @@ plt.plot(epochs_range, loss, label='Training Loss')
 plt.plot(epochs_range, val_loss, label='Validation Loss')
 plt.legend(loc='upper right')
 plt.title('Training and Validation Loss')
-plt.show()
+plt.savefig('training_validation.png')
+# plt.show()
 
 from sklearn.metrics import classification_report
 
@@ -106,4 +107,4 @@ def evaluate_model(val_ds,model):
         y_true=y_true+batch_labels.numpy().tolist()
     print(classification_report(y_true,y_pred))
 
-evaluate_model(val_ds,model)
+evaluate_model(val_ds,model) 

@@ -1,5 +1,6 @@
 from PIL import Image
 import os
+import random
 
 data_dir = 'dataset'
 output_dir = 'processed_dataset'
@@ -44,3 +45,19 @@ if check_image_sizes(directory):
     print("All images are the same size.")
 else:
     print("Not all images are the same size.")
+    
+    
+
+
+def limit_images(directory, limit):
+    for subdir in os.listdir(directory):
+        subdir_path = os.path.join(directory, subdir)
+        if os.path.isdir(subdir_path):
+            images = os.listdir(subdir_path)
+            if len(images) > limit:
+                images_to_remove = random.sample(images, len(images) - limit)
+                for image in images_to_remove:
+                    os.remove(os.path.join(subdir_path, image))
+
+limit_images('processed_dataset', 350)
+
